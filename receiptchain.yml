@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+
+    masternode:
+      build:
+        context: ./master
+      ports:
+        - "4776:4776"
+        - "9000:9000"
+    
+    slavenode:
+      build:
+        context: ./slave
+      depends_on:
+          - masternode
+      links:
+          - masternode
+    
+    explorer:
+      build:
+        context: ./explorer
+      depends_on:
+        - masternode
+      links:
+        - masternode
+      ports:
+        - "2750:2750"
